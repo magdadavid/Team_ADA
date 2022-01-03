@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-image: url("./img/backgorund.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 600px;
+
+}
+
+
+.container {
+    max-width: 600px;
+    margin: 100px auto;
+    border: 1px solid steelblue;
+    padding: 30px;
+    border-radius: 5px;
+    background-color: gainsboro;
+    opacity : 0.9; 
+}
+
+.containter.register {
+  max-height: 700px;
+}
+
+.container.logIn {
+  max-height: 550px;
+}
+
+.headerHome {
+ 
+  text-align: center;
+}
+
+.logIn {
+    margin: 60px auto;
+    font-size: 18px;
+}
+
+.register {
+  margin: 60px auto;
+  font-size: 18px;
+}
+
+.registerstatus {
+  max-width: 600px;
+  border: 1px solid steelblue;
+  padding: 30px;
+  border-radius: 5px;
+  background-color: gainsboro;
+  opacity : 0.9; 
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  max-height: 200px;
+  text-align: center;
+}
+.btn-custom {
+  
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 15px;
+  margin-top: 30px;
+ 
+}
+.btn-custom.login {
+    background-color: rgb(224, 169, 17) !important;
+    color: #fff;
+    opacity : 1;
+}
+.btn-custom.register {
+   float: right;
+   background-color: rgb(0, 0, 0) !important;
+   opacity : 1;
+   color: #fff;
+
+}
+
+.btnok {
+  margin:40px auto;
+  display: block;
+  max-width: 200px;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  background-color: rgb(0, 0, 0) !important;
+  opacity : 1;
+  color: #fff;
+}
+
+
+.add-form {
+  margin-bottom: 40px;
+}
+
+.form-control {
+  margin: 20px 0;
+}
+
+.form-control label {
+  display: block;
+}
+
+.form-control input {
+  width: 100%;
+  height: 40px;
+  margin: 5px;
+  padding: 3px 7px;
+  font-size: 17px;
+}
+
+.form-control-check {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-control-check label {
+  flex: 1;
+}
+
+.form-control-check input {
+  flex: 2;
+  height: 20px;
+}
+
+footer {
+  margin-top: 30px;
+  text-align: center;
+}
