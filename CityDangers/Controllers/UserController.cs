@@ -13,7 +13,7 @@ namespace CityDangers.Controllers
 {
     [ApiController]
     [Route("/api/user")]
-    public class UserController : ControllerBase
+    public class UserController : Controller
     {
         private IUserRepository _usersRepository;
         public UserController(IUserRepository usersRepository)
@@ -29,6 +29,7 @@ namespace CityDangers.Controllers
             user.lastName = user_test.lastName;
             user.email = user_test.email;
             user.password = user_test.password;
+            user.points = 0;
             try
             {
 
@@ -45,9 +46,23 @@ namespace CityDangers.Controllers
                     
         }
 
+        [HttpPost("updatepoints")]
+        public async Task UpdateUserPoints(Username user_test)
+        {
+            await _usersRepository.UpdateUserPoints(user_test.userstring);
+        }
+
+        [HttpPost("getuser")]
+        public async Task<JsonResult> GetUser(Username user_test)
+        {
+            var user = new UserEntity();
+            user = await _usersRepository.GetUser(user_test.userstring);
+            return Json(user);
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Post(UserLogin user_login)
-        {
+        {  
             string _getpass = await _usersRepository.GetUserPass(user_login.username);
             if( _getpass == null)
               return BadRequest(new {message = "login failed"});
@@ -61,6 +76,8 @@ namespace CityDangers.Controllers
               
             
         }
+
+        
 
     }
 }

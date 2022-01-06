@@ -7,7 +7,7 @@ export class LoginFailed extends Component {
         return (
          <div className='registerstatus'>
              <p> Incorrect username or password </p>
-             <Button className="btnok" href="/"> Try again </Button>
+             <Button className="btnok" href="/login"> Try again </Button>
           </div>
         );
       }

@@ -1,14 +1,20 @@
 import React, { Component } from "react";
 import Button from "react-bootstrap/Button";
+import {useLocation, useHistory} from 'react-router-dom';
 
-export class RegisterSuccess extends Component {
-
-    render () {
-        return (
+export function RegisterSuccess(){
+  const location = useLocation();
+  let history = useHistory();
+   
+  const handleOK = async e => {
+    e.preventDefault();
+    history.push({ pathname:"/", state: location.state});
+  }
+  return (
          <div className='registerstatus'>
              <p> The account was created successfully </p>
-             <Button className="btnok" href="/"> OK </Button>
+             <Button className="btnok" onClick={handleOK}> OK </Button>
           </div>
-        );
-      }
+  );
+      
 }

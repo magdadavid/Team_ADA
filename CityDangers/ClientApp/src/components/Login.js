@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
 
 async function loginUser(credentials)
 {
+ 
   return fetch('http://localhost:5000/api/user/login', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -29,9 +30,10 @@ export function Login() {
       username,
       password
     });
+  
   if(response.ok)
   {
-      history.push("/home");  
+      history.push({ pathname:"/", state: username});  
   }
   else{
       history.push("/loginfailed");  

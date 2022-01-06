@@ -6,7 +6,10 @@ import { RegisterSuccess } from './components/RegisterSuccess';
 import { RegisterFailed } from './components/RegisterFailed';
 import { Home } from './components/Home';
 import { LoginFailed } from './components/LoginFailed';
+import { Profile } from './components/Profile';
+
 import './app.css';
+
 
 
 export default class App extends Component {
@@ -14,16 +17,17 @@ export default class App extends Component {
 
   render () {
     return (
-     
+   
       <div>
-        <Route exact path='/' component={HomeLogin} />
-        <Route path='/register' component={Register} /> 
-        <Route path='/registersuccess' component={RegisterSuccess} />
-        <Route path='/registerfailed' component={RegisterFailed} />
-        <Route path='/home' component={Home} />
-        <Route path='/loginfailed' component={LoginFailed} />
+        <Route exact path='/' component={Home} />
+        <Route exact path='/login' component={HomeLogin} />
+        <Route exact path='/register' component={Register} /> 
+        <Route exact path='/registersuccess' component={RegisterSuccess} />
+        <Route exact path='/registerfailed' component={RegisterFailed} />
+        <Route exact path='/loginfailed' component={LoginFailed} />
+        <Route exact path='/profile' component={Profile} />
       </div>
-
+    
     );
   }
 }

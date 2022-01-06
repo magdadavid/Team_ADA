@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
@@ -48,6 +49,60 @@ namespace Repositories
             var insertOperation = TableOperation.Insert(user);
             await _usersTable.ExecuteAsync(insertOperation);
             
+        }
+
+        public async Task<UserEntity> GetUser(string username)
+        {
+            
+            TableQuery<UserEntity> query = new TableQuery<UserEntity>();
+
+            TableContinuationToken token = null;
+            do
+            {
+            TableQuerySegment<UserEntity> resultSegment = await _usersTable.ExecuteQuerySegmentedAsync(query, token);
+            token = resultSegment.ContinuationToken;
+
+            foreach (UserEntity entity in resultSegment.Results)
+            {
+                if(entity.RowKey == username)
+                    return entity;
+            }
+            }while (token != null);
+             
+            return null;
+             
+
+           
+        }
+
+        public async Task UpdateUserPoints(string username)
+        {
+            var user = new UserEntity();
+            TableQuery<UserEntity> query = new TableQuery<UserEntity>();
+
+            TableContinuationToken token = null;
+            do
+            {
+            TableQuerySegment<UserEntity> resultSegment = await _usersTable.ExecuteQuerySegmentedAsync(query, token);
+            token = resultSegment.ContinuationToken;
+
+            foreach (UserEntity entity in resultSegment.Results)
+            {
+                if(entity.RowKey == username)
+                   user = entity; 
+            }
+            }while (token != null);
+            user.points += 10;
+            var editOperation = TableOperation.Merge(user);
+            try{
+                await _usersTable.ExecuteAsync(editOperation);
+            }
+            catch (StorageException e)
+            {
+                Console.WriteLine("{0}", e);
+            }
+
+
         }
 
         public async Task<string> GetUserPass(string _username)

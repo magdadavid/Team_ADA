@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
+import { NBLogReg } from './NBLogReg';
 
 
 async function registerUser(credentials)
@@ -44,13 +45,16 @@ export function Register() {
       history.push("/registerfailed");
    }
    else {
-     history.push("/registersuccess");
+     history.push({pathname: "/registersuccess", state: username});
    }
    
   }
 
   return (
-     <div className="container register">
+    <>
+    <NBLogReg />
+    
+     <div className="cont register">
 
      <div className="headerHome"> 
      <h1> <b> City Dangers </b> </h1>
@@ -113,5 +117,6 @@ export function Register() {
       </Form>
     </div>
     </div>
+    </>
   );
 }
