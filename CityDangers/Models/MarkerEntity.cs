@@ -13,6 +13,7 @@ namespace Models{
         public double latitude { get; set; }
         public double longitude { get; set; }
         public string message { get; set; }
+        public bool confirmed { get; set; }
 
     }
 }

@@ -24,6 +24,7 @@ namespace CityDangers
 
             services.AddScoped<IUserRepository, UsersRepository>();
             services.AddScoped<IMarkerRepository, MarkerRepository>();
+            services.AddScoped<IMetricsRepository, MetricsRepository>();
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory

@@ -12,6 +12,8 @@ import Form from "react-bootstrap/Form";
 import { useHistory } from 'react-router-dom';
 import { NBLogIn } from "./NBLogIn";
 import { ReactComponent as Logo } from '../img/star.svg';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CheckCircleIcon from "@mui/icons-material/CheckCircle"
 
 const libraries = ["places"];
 const mapContainerStyle = {
@@ -45,7 +47,6 @@ async function createCredentials(credentials)
 }
 
 
-
 export function ViewProfile(props) {
 
   const {isLoaded, loadError} = useLoadScript({
@@ -58,6 +59,7 @@ export function ViewProfile(props) {
   const [getMarkers, setGetMarkers] = React.useState(null);
   const [markersArray, setMarkersArray] = React.useState(null);
   const [userprofile, setUserProfile] = React.useState(null);
+  const [metrics, setUserMetrics] = React.useState(null);
   
   
  
@@ -68,11 +70,13 @@ export function ViewProfile(props) {
         .then(response => setGetMarkers(response.data));
        axios.post('http://localhost:5000/api/user/getuser', {userstring})
         .then(response => setUserProfile(response.data));
+       axios.post('http://localhost:5000/api/metrics/getusermetrics', {userstring})
+        .then(response => setUserMetrics(response.data));
         
   }, []);
   
   const deleteMarker = async e => {
-    
+    e.preventDefault();
     const markeruser = selected.partitionKey;
     const markerdate = selected.rowKey;
     const markerlat = selected.latitude;
@@ -88,10 +92,13 @@ export function ViewProfile(props) {
     console.log(credentials);
 
     const response = axios.post('http://localhost:5000/api/marker/delete', credentials);
-    if (response) window.location.reload(false);
+    setTimeout(() => { window.location.reload(false); 
+    }, 1000); 
     
         
   }
+
+  
 
   
 
@@ -124,28 +131,68 @@ export function ViewProfile(props) {
           />
        )) ): null}
 
-      {selected ? (
+{selected ? (
+      <>
+      {(selected.confirmed == false) ? (
+        <>
           <InfoWindow
-            position={{ lat: selected.latitude, lng: selected.longitude }}
-            onCloseClick={() => {
+              position={{ lat: selected.latitude, lng: selected.longitude }}
+              onCloseClick={() => {
               setSelected(null);
-            }}
-          >
-            <div className="infowindow">
+              }}
+              >
+              <div className="infowindow">
               <h2 style={{fontSize:'16px', textAlign:'center'}}>
                 <span role="img" aria-label="warining-sign">
                   ⚠ 
                 </span>{" "}
                 Alert
               </h2>
-              <p style={{fontSize:'14px', textAlign:'center'}}>{selected.message}</p>
+              <p style={{fontSize:'17px', textAlign:'center', color: 'red'}}>{selected.message}</p>
+              <p style={{fontSize:'12px', textAlign:'left'}}> Posted by you </p> 
               <p style={{fontSize:'12px', textAlign:'left'}}>Posted date: {selected.rowKey} </p>
+              <IconButton className="confirmicon">
+                <CheckCircleOutlineIcon />
+              </IconButton>
+              <p style={{fontSize:'14px', textAlign:'center', color:'grey'}}> Unconfirmed </p>
               <IconButton aria-label="delete" className="deleteicon" onClick={deleteMarker}>
                <DeleteIcon />
               </IconButton>
-            </div>
-          </InfoWindow>
-        ) : null}
+              </div>
+              </InfoWindow>     
+        </>
+        ) : 
+        (
+        <>
+           <InfoWindow
+              position={{ lat: selected.latitude, lng: selected.longitude }}
+              onCloseClick={() => {
+              setSelected(null);
+              }}
+              >
+              <div className="infowindow">
+              <h2 style={{fontSize:'16px', textAlign:'center'}}>
+                <span role="img" aria-label="warining-sign">
+                  ⚠ 
+                </span>{" "}
+                Alert
+              </h2>
+              <p style={{fontSize:'17px', textAlign:'center', color: 'red'}}>{selected.message}</p>
+              <p style={{fontSize:'12px', textAlign:'left'}}> Posted by you </p> 
+              <p style={{fontSize:'12px', textAlign:'left'}}>Posted date: {selected.rowKey} </p>
+              <IconButton className="confirmicon" color="success">
+                <CheckCircleIcon />
+              </IconButton>
+              <p style={{fontSize:'14px', textAlign:'center', color:'green'}}> Confirmed </p>
+              <IconButton aria-label="delete" className="deleteicon" onClick={deleteMarker}>
+               <DeleteIcon />
+              </IconButton>
+              </div>
+              </InfoWindow>
+        </>
+        )}
+        </>
+      ) : null }
       </GoogleMap>
     </div>
     
@@ -163,6 +210,18 @@ export function ViewProfile(props) {
          </div>
          </>
        ) : null }
+
+       {metrics ? (
+         <>
+          <div className="metrics">
+            <h1 style={{textAlign:'center', fontSize: '30px'}}> Active markers</h1>
+            <p style={{textAlign:'center'}}> Total: {metrics.totalmarkers} </p>
+            <p style={{textAlign:'center'}}> Confirmed: {metrics.confmarkers} </p>
+            <p style={{textAlign:'center'}}> Unconfirmed: {metrics.unconfmarkers} </p>
+          </div>
+          
+         </>
+       ): null}
    
     </>
   );

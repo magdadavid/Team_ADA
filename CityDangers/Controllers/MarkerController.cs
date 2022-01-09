@@ -28,7 +28,7 @@ namespace CityDangers.Controllers
             marker.latitude = marker_test.markerlat;
             marker.longitude = marker_test.markerlong;
             marker.message = marker_test.markermess;
-            
+            marker.confirmed = false;
             try
             {
 
@@ -46,6 +46,23 @@ namespace CityDangers.Controllers
             
                     
         }
+
+        [HttpPost("confirm")]
+        public async Task<IActionResult> ConfirmMarker(Marker marker_test)
+        {
+             try
+            {
+                await _markerRepository.ConfirmMarker(marker_test.markeruser, marker_test.markerdate);
+                return Ok("success");
+            }
+            catch (System.Exception e)
+            {
+                Console.WriteLine("{0}", e);
+                return BadRequest(new {message = "failure"});
+            }
+
+        }
+
         [HttpPost("getbyuser")]
         public async Task<JsonResult> GetMarkerByUser(Username user_test)
         {

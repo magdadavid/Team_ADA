@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
@@ -42,6 +43,37 @@ namespace Repositories
             } while (token != null);
 
             return markers;
+        }
+
+        public async Task ConfirmMarker(string username, string date)
+        {
+            var marker = new MarkerEntity();
+            TableQuery<MarkerEntity> query = new TableQuery<MarkerEntity>();
+
+            TableContinuationToken token = null;
+            do
+            {
+            TableQuerySegment<MarkerEntity> resultSegment = await _markersTable.ExecuteQuerySegmentedAsync(query, token);
+            token = resultSegment.ContinuationToken;
+
+            foreach (MarkerEntity entity in resultSegment.Results)
+            {
+                if(entity.PartitionKey == username)
+                  if(entity.RowKey == date)
+                      marker = entity; 
+            }
+            }while (token != null);
+            marker.confirmed = true;
+            var editOperation = TableOperation.Merge(marker);
+            try{
+                await _markersTable.ExecuteAsync(editOperation);
+            }
+            catch (StorageException e)
+            {
+                Console.WriteLine("{0}", e);
+            }
+
+
         }
         public async Task InsertNewMarker(MarkerEntity marker)
         {

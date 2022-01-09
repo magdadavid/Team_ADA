@@ -81,7 +81,7 @@ body {
   top: 43%;
   right: 2%;
   width: 45%;
-  height: 54%;
+  height: 30%;
   border: 1px solid rgb(0, 6, 10);
   background-color: rgb(255, 253, 253);
   border-radius: 5px;
@@ -90,17 +90,36 @@ body {
 
 .starlogo {
   position: relative;
-  top: 24%;
-  left: 19%;
+  top: 12%;
+  left: 25%;
   height: 40%;
 
 }
 
 .userpoints{
   position: relative;
-  top :-19%;
-  left: 50%;
-  font-size: 170px;
+  top :-32%;
+  left: 45%;
+  font-size: 100px;
+}
+
+.metrics{
+  position:fixed;
+  top: 74%;
+  right: 2%;
+  width: 45%;
+  height: 23%;
+  border: 1px solid rgb(0, 6, 10);
+  background-color: rgb(255, 253, 253);
+  border-radius: 5px;
+  opacity:0.9;
+}
+.metricsinfo{
+  position: relative;
+  top: 12%;
+  left: 0%;
+  height: 40%;
+
 }
 
 .logo{
@@ -142,6 +161,20 @@ body {
   float:right;
   position:fixed;
   display: block;
+}
+.confirmicon{
+  float:center;
+  position:relative;
+  left: 35%;
+ 
+}
+
+.dummy{
+  float:right;
+  position:fixed;
+  display: block;
+  opacity:0;
+
 }
 
 .navbarmenu {

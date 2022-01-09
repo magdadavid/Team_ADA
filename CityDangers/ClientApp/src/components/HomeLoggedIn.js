@@ -4,7 +4,11 @@ import { formatRelative } from "date-fns";
 import "@reach/combobox/styles.css";
 import mapStyles from "../mapStyles";
 import IconButton from "@mui/material/IconButton";
+import Icon from "@mui/material/Icon";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DoneIcon from "@mui/icons-material/Done";
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CheckCircleIcon from "@mui/icons-material/CheckCircle"
 import axios from 'axios';
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -59,6 +63,10 @@ async function updatePoints(usernameCredential)
 
 }
 
+async function createCredentials(credentials)
+{
+    return credentials;
+}
 
 
 export function HomeLoggedIn(props) {
@@ -94,9 +102,7 @@ export function HomeLoggedIn(props) {
       markerlong,
       markermess
     });
-    const userstring = markeruser;
-    const pointsResponse = await updatePoints({userstring});
-   if(response.ok && pointsResponse)
+   if(response.ok)
     window.location.reload(false);
   }
 
@@ -116,6 +122,57 @@ export function HomeLoggedIn(props) {
     console.log(result);
     */
   } 
+
+  const deleteMarker = async e => {
+    e.preventDefault();
+    const markeruser = selected.partitionKey;
+    const markerdate = selected.rowKey;
+    const markerlat = selected.latitude;
+    const markerlong = selected.longitude;
+    const markermess = selected.message;
+    const credentials = await createCredentials({
+      markeruser,
+      markerdate,
+      markerlat,
+      markerlong,
+      markermess
+    });
+   // console.log(credentials);
+
+    const response = axios.post('http://localhost:5000/api/marker/delete', credentials);
+    setTimeout(() => { window.location.reload(false); 
+    }, 1000);   
+  }
+
+  const confirmMarker = async e => {
+    e.preventDefault();
+    const markeruser = selected.partitionKey;
+    const markerdate = selected.rowKey;
+    const markerlat = selected.latitude;
+    const markerlong = selected.longitude;
+    const markermess = selected.message;
+    const credentials = await createCredentials({
+      markeruser,
+      markerdate,
+      markerlat,
+      markerlong,
+      markermess
+    });
+    console.log(credentials);
+
+    const userstring = markeruser;
+    const pointsResponse = await updatePoints({userstring});
+
+    const response = axios.post('http://localhost:5000/api/marker/confirm', credentials);
+    setTimeout(() => { window.location.reload(false); 
+    }, 1000);
+    
+    
+        
+  }
+
+
+
   
 
 
@@ -207,25 +264,124 @@ export function HomeLoggedIn(props) {
        )) ): null}
 
       {selected ? (
-          <InfoWindow
-            position={{ lat: selected.latitude, lng: selected.longitude }}
-            onCloseClick={() => {
+      <>
+      {(selected.confirmed == false) ? (
+          <>
+              {(selected.partitionKey==props.username) ? (
+              <InfoWindow
+              position={{ lat: selected.latitude, lng: selected.longitude }}
+              onCloseClick={() => {
               setSelected(null);
-            }}
-          >
-            <div className="infowindow">
+              }}
+              >
+              <div className="infowindow">
               <h2 style={{fontSize:'16px', textAlign:'center'}}>
                 <span role="img" aria-label="warining-sign">
                   ⚠ 
                 </span>{" "}
                 Alert
               </h2>
-              <p style={{fontSize:'14px', textAlign:'center'}}>{selected.message}</p>
-              <p style={{fontSize:'12px', textAlign:'left'}}> Posted by: {selected.partitionKey}</p> 
+              <p style={{fontSize:'17px', textAlign:'center', color: 'red'}}>{selected.message}</p>
+              <p style={{fontSize:'12px', textAlign:'left'}}> Posted by you </p> 
               <p style={{fontSize:'12px', textAlign:'left'}}>Posted date: {selected.rowKey} </p>
+              <IconButton className="confirmicon">
+                <CheckCircleOutlineIcon />
+              </IconButton>
+              <p style={{fontSize:'14px', textAlign:'center', color:'grey'}}> Unconfirmed </p>
+              <IconButton aria-label="delete" className="deleteicon" onClick={deleteMarker}>
+               <DeleteIcon />
+              </IconButton>
+              </div>
+              </InfoWindow> ) : 
+              (
+              <InfoWindow
+              position={{ lat: selected.latitude, lng: selected.longitude }}
+              onCloseClick={() => {
+              setSelected(null);
+              }}
+              >
+              <div className="infowindow">
+              <h2 style={{fontSize:'16px', textAlign:'center'}}>
+                <span role="img" aria-label="warining-sign">
+                  ⚠ 
+                </span>{" "}
+                Alert
+              </h2>
+              <p style={{fontSize:'17px', textAlign:'center', color: 'red'}}>{selected.message}</p>
+              <p style={{fontSize:'12px', textAlign:'left'}}> Posted by: {selected.partitionKey} </p> 
+              <p style={{fontSize:'12px', textAlign:'left'}}>Posted date: {selected.rowKey} </p>
+              <IconButton className="confirmicon">
+                <CheckCircleOutlineIcon />
+              </IconButton>
+              <p style={{fontSize:'14px', textAlign:'center', color:'grey'}}> Unconfirmed </p>
+              <IconButton aria-label="delete" className="deleteicon" onClick={confirmMarker}>
+               <DoneIcon />
+              </IconButton>
             </div>
-          </InfoWindow>
-        ) : null}
+            </InfoWindow>
+            )}
+        </>
+        ) : 
+        (
+          <>
+           {(selected.partitionKey==props.username) ? (
+              <InfoWindow
+              position={{ lat: selected.latitude, lng: selected.longitude }}
+              onCloseClick={() => {
+              setSelected(null);
+              }}
+              >
+              <div className="infowindow">
+              <h2 style={{fontSize:'16px', textAlign:'center'}}>
+                <span role="img" aria-label="warining-sign">
+                  ⚠ 
+                </span>{" "}
+                Alert
+              </h2>
+              <p style={{fontSize:'17px', textAlign:'center', color: 'red'}}>{selected.message}</p>
+              <p style={{fontSize:'12px', textAlign:'left'}}> Posted by you </p> 
+              <p style={{fontSize:'12px', textAlign:'left'}}>Posted date: {selected.rowKey} </p>
+              <IconButton className="confirmicon" color="success">
+                <CheckCircleIcon />
+              </IconButton>
+              <p style={{fontSize:'14px', textAlign:'center', color:'green'}}> Confirmed </p>
+              <IconButton aria-label="delete" className="deleteicon" onClick={deleteMarker}>
+               <DeleteIcon />
+              </IconButton>
+              </div>
+              </InfoWindow> ) : 
+              (
+              <InfoWindow
+              position={{ lat: selected.latitude, lng: selected.longitude }}
+              onCloseClick={() => {
+              setSelected(null);
+              }}
+              >
+              <div className="infowindow">
+              <h2 style={{fontSize:'16px', textAlign:'center'}}>
+                <span role="img" aria-label="warining-sign">
+                  ⚠ 
+                </span>{" "}
+                Alert
+              </h2>
+              <p style={{fontSize:'17px', textAlign:'center', color: 'red'}}>{selected.message}</p>
+              <p style={{fontSize:'12px', textAlign:'left'}}> Posted by: {selected.partitionKey} </p> 
+              <p style={{fontSize:'12px', textAlign:'left'}}>Posted date: {selected.rowKey} </p>
+              <IconButton className="confirmicon" color="success">
+                <CheckCircleIcon />
+              </IconButton>
+              <p style={{fontSize:'14px', textAlign:'center', color:'green'}}> Confirmed </p>
+              <IconButton className="dummy" color="success">
+                <CheckCircleIcon />
+              </IconButton>
+            </div>
+            </InfoWindow>
+            )} 
+          </>
+
+        )}
+        </>
+      ) : null }
       </GoogleMap>
     </div>
     </>
