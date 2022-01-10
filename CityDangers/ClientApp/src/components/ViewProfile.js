@@ -3,17 +3,15 @@ import {  GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-map
 import { formatRelative } from "date-fns";
 import "@reach/combobox/styles.css";
 import mapStyles from "../mapStyles";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
 import axios from 'axios';
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
 import { useHistory } from 'react-router-dom';
 import { NBLogIn } from "./NBLogIn";
 import { ReactComponent as Logo } from '../img/star.svg';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import CheckCircleIcon from "@mui/icons-material/CheckCircle"
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { IconButton } from "@mui/material"; 
+import  DeleteIcon  from "@mui/icons-material/Delete";
+
 
 const libraries = ["places"];
 const mapContainerStyle = {

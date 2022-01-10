@@ -4,15 +4,12 @@ import { formatRelative } from "date-fns";
 import "@reach/combobox/styles.css";
 import mapStyles from "../mapStyles";
 import IconButton from "@mui/material/IconButton";
-import Icon from "@mui/material/Icon";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from "@mui/icons-material/Done";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CheckCircleIcon from "@mui/icons-material/CheckCircle"
 import axios from 'axios';
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
+import { Button, Modal, Form } from "react-bootstrap";
 import { useHistory } from 'react-router-dom';
 import { NBLogIn } from "./NBLogIn";
 

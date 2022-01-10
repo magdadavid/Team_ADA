@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import {  GoogleMap, useLoadScript, Marker, InfoWindow } from "@react-google-maps/api"; 
 import "@reach/combobox/styles.css";
 import mapStyles from "../mapStyles";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
 import axios from 'axios';
 import { NBLogOut } from './NBLogOut';
 

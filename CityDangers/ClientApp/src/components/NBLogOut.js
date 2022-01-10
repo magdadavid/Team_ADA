@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import Navbar from 'react-bootstrap/NavBar';
-import Nav from 'react-bootstrap/Nav';
-import Container  from 'react-bootstrap/Container';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import { Container, Nav, Navbar }  from 'react-bootstrap';
 import { ReactComponent as Logo } from '../img/danger.svg';
 import './NavMenu.css';
 
